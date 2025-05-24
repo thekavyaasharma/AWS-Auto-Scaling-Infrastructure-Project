@@ -2,6 +2,10 @@
 
 This project sets up an AWS infrastructure that automatically adds more servers when traffic gets heavy. It includes two web servers (one for students, one for faculty) with a load balancer that spreads traffic between them.
 
+## Why I Built This
+
+I wanted to learn how to create a real production setup that can handle traffic spikes without going down. This project covers the main pieces you need: networking, servers, load balancing, and monitoring.
+
 ## Objective
 
 - Creates a custom network (VPC) with two subnets in different zones
@@ -11,14 +15,11 @@ This project sets up an AWS infrastructure that automatically adds more servers 
 - Sends email alerts when scaling happens
 - Everything is built using AWS CLI commands
 
-## Why I Built This
+## Pre-requisites
 
-I wanted to learn how to create a real production setup that can handle traffic spikes without going down. This project covers the main pieces you need: networking, servers, load balancing, and monitoring.
-
-## What You Need
-
-- An AWS account
+- An AWS account (but don't use the root user!)
 - AWS CLI installed on your computer
+- IAM user with proper permissions
 - Some basic knowledge of AWS services
 
 ## Getting Started
@@ -32,15 +33,28 @@ Open Command Prompt and check if it worked:
 aws --version
 ```
 
-### Step 2: Set Up Your AWS Credentials
+### Step 2: Create IAM User (Important!)
+
+**Never use your root AWS account for this!** Create a separate IAM user:
+
+1. Go to AWS Console and navigate to IAM
+2. Create a new user (like "IAM-access")
+3. Give it these permissions:
+   - AdministratorAccess
+   - AmazonVPCFullAccess  
+   - AmazonEC2FullAccess
+4. Create access keys for CLI access
+5. Download the credentials and save them safely
+
+### Step 3: Configure AWS CLI
 
 In Command Prompt, run:
 ```cmd
 aws configure
 ```
-Enter your access key, secret key, region (like ap-south-1), and set output to json.
+Enter your **IAM user** access key, secret key, region (like ap-south-1), and set output to json.
 
-### Step 3: Run the Commands
+### Step 4: Run the Commands
 
 Open Command Prompt as Administrator and follow the commands step by step. All the infrastructure is built using Command Prompt - no clicking around in the AWS console needed!
 
@@ -138,6 +152,10 @@ This uses mostly free tier resources:
 - CloudWatch monitoring is mostly free
 
 ## Common Problems I Ran Into
+
+**Can't connect to AWS**: Make sure you're using IAM user credentials, not root account
+
+**Access denied errors**: Check your IAM user has the right permissions (AdministratorAccess, VPC, and EC2 permissions)
 
 **Servers won't start**: Check your security groups allow the right ports
 
